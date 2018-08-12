@@ -45,6 +45,8 @@ for path in archives:
             time.sleep(4)
             shutil.rmtree(str(prodDir))
     shutil.unpack_archive(str(path), str(prodDir))
+    if not copySlides(prodDir, outputDir, prodName):
+        print(prodName + "のスライドが無いんですが")
     exe = findExe(prodDir)
     if not exe:
         print(prodName + "のレイトレは実行しようがない")

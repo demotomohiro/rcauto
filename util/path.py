@@ -45,3 +45,15 @@ def isFinished(prodOutputDirBase, prodName):
 def copyOutputs(dir, prodOutputDirBase, prodName, startTime):
     return _copyOutputs(dir, startTime, _getProdOutputDir(prodOutputDirBase, prodName), _getProdImageDir(prodOutputDirBase, prodName))
 
+def copySlides(dir, prodOutputDirBase, prodName):
+    dstDir = _getProdSlideDir(prodOutputDirBase, prodName)
+    srcs = []
+    for i in ["*.pdf", "*.pptx", "*.key"]:
+        srcs.extend(dir.rglob(i))
+    if len(srcs) == 0:
+        return False
+    mkdir(dstDir)
+    for i in srcs:
+        _copyfile(i, dstDir)
+
+    return True
