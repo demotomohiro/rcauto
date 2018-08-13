@@ -10,7 +10,7 @@ from util.path          import *
 
 parser = argparse.ArgumentParser(description="レイトレ合宿における作品を自動実行するやつ")
 parser.add_argument("--src", help = "ダウンロードするファイルがあるページのURL", metavar="URL")
-parser.add_argument("--timelimit", type=int, help = "制限時間(秒)")
+parser.add_argument("--timelimit", default = 123, type = int, help = "制限時間(秒)")
 args = parser.parse_args()
 
 downloadsTxt = pathlib.Path("downloads.txt")
