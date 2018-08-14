@@ -15,6 +15,7 @@ def _findExeRecursive(dir, candidates):
 def findExe(dir):
     if sys.platform == 'win32':
         candidates = list(dir.glob("**/*.bat"))
+        candidates.extend(dir.glob("**/*.cmd"))
         if len(candidates) == 0:
             candidates = list(dir.glob("**/*.exe"))
     else:
