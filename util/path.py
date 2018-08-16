@@ -34,8 +34,8 @@ def _copyOutputs(dir, startTime, prodOutputDir, prodImageDir, foundImage = False
                     _copyfile(i, prodOutputDir)
     return foundImage
 
-def _getProdOutputDir(prodOutputDirBase, prodName):
-    return prodOutputDirBase / "output" / prodName
+def _getProdOutputDir(prodName):
+    return getOutputDir() / "output" / prodName
 
 def _getProdImageDir(prodName):
     return getOutputDir() / "image" / prodName
@@ -46,8 +46,8 @@ def _getProdSlideDir(prodOutputDirBase, prodName):
 def isFinished(prodName):
     return _getProdImageDir(prodName).exists()
 
-def copyOutputs(dir, prodOutputDirBase, prodName, startTime):
-    return _copyOutputs(dir, startTime, _getProdOutputDir(prodOutputDirBase, prodName), _getProdImageDir(prodName))
+def copyOutputs(dir, prodName, startTime):
+    return _copyOutputs(dir, startTime, _getProdOutputDir(prodName), _getProdImageDir(prodName))
 
 def copySlides(dir, prodOutputDirBase, prodName):
     dstDir = _getProdSlideDir(prodOutputDirBase, prodName)
