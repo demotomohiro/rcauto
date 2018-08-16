@@ -26,7 +26,7 @@ with downloadsTxt.open() as downloadsFile:
 
 downloadDir = mkdir("down")
 workDir     = mkdir("work")
-outputDir   = mkdir("out")
+outputDir   = getOutputDir()
 archives    = []
 for i in downloads:
     path = download(i, getDownloadDestPath(i, downloadDir))
@@ -35,7 +35,7 @@ for i in downloads:
 for path in archives:
     prodName = path.stem.split('.')[0]
     prodDir = workDir / prodName
-    if isFinished(outputDir, prodName):
+    if isFinished(prodName):
         print(prodName + "のレンダリングはもうしなくていいんだ。")
         continue
     if prodDir.exists():

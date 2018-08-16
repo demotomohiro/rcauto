@@ -9,6 +9,10 @@ def mkdir(path):
     p.mkdir(parents=True, exist_ok=True)
     return abspath(p)
 
+_outputDir   = mkdir("out")
+def getOutputDir():
+    return _outputDir
+
 def _copyfile(src, dst):
     return shutil.copy2(str(src), str(dst))
 
@@ -33,17 +37,17 @@ def _copyOutputs(dir, startTime, prodOutputDir, prodImageDir, foundImage = False
 def _getProdOutputDir(prodOutputDirBase, prodName):
     return prodOutputDirBase / "output" / prodName
 
-def _getProdImageDir(prodOutputDirBase, prodName):
-    return prodOutputDirBase / "image" / prodName
+def _getProdImageDir(prodName):
+    return getOutputDir() / "image" / prodName
 
 def _getProdSlideDir(prodOutputDirBase, prodName):
     return prodOutputDirBase / "slide" / prodName
 
-def isFinished(prodOutputDirBase, prodName):
-    return _getProdImageDir(prodOutputDirBase, prodName).exists()
+def isFinished(prodName):
+    return _getProdImageDir(prodName).exists()
 
 def copyOutputs(dir, prodOutputDirBase, prodName, startTime):
-    return _copyOutputs(dir, startTime, _getProdOutputDir(prodOutputDirBase, prodName), _getProdImageDir(prodOutputDirBase, prodName))
+    return _copyOutputs(dir, startTime, _getProdOutputDir(prodOutputDirBase, prodName), _getProdImageDir(prodName))
 
 def copySlides(dir, prodOutputDirBase, prodName):
     dstDir = _getProdSlideDir(prodOutputDirBase, prodName)
