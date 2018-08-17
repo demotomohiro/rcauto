@@ -13,6 +13,10 @@ _outputDir   = mkdir("out")
 def getOutputDir():
     return _outputDir
 
+_stdoutDir  = mkdir(getOutputDir() / "stdout")
+def getStdoutDir():
+    return _stdoutDir
+
 def _copyfile(src, dst):
     return shutil.copy2(str(src), str(dst))
 

@@ -55,7 +55,7 @@ for path in archives:
     #ファイルのタイムスタンプを見て元からあるファイルなのか出力ファイルなのかを区別する。
     #なので確実に出力ファイルのタイムがstartTimeより後になるようsleepする。
     time.sleep(4)
-    render(exe, args.timelimit, outputDir/prodName)
+    render(exe, args.timelimit, getStdoutDir() / prodName)
     if not copyOutputs(prodDir, prodName, startTime):
         print(str(exe) + "の出力画像が無い。なにかがおかしい。")
 

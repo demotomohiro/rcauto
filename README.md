@@ -34,6 +34,6 @@ Linuxでは.shファイルを最初に探し、次に実行権限のあるファ
 もし複数の.bat/.sh/.exeファイルがある場合はエラーになる。
 1. レンダラーを実行する。
 制限時間が経過すると強制終了される。
-stdoutとstderrはout/"圧縮ファイル名".stdout.txtとout/"圧縮ファイル名".stderr.txtに保存する。
+stdoutとstderrはout/stdout/"圧縮ファイル名".stdout.txtとout/stdout/"圧縮ファイル名".stderr.txtに保存する。
 1. 出力画像ファイル(.bmpまたは.png)を探して、out/image/"圧縮ファイル名"ディレクトリ下にコピーする。
 1. 出力画像ファイル以外に生成されたファイル(ログファイル等)があればout/output/"圧縮ファイル名"ディレクトリ下にコピーする。
