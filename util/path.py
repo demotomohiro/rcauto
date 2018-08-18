@@ -17,6 +17,12 @@ _stdoutDir  = mkdir(getOutputDir() / "stdout")
 def getStdoutDir():
     return _stdoutDir
 
+def getImageDir():
+    return getOutputDir() / "image"
+
+def getAnimeDir():
+    return getOutputDir() / "anime"
+
 def _copyfile(src, dst):
     return shutil.copy2(str(src), str(dst))
 
@@ -42,7 +48,7 @@ def _getProdOutputDir(prodName):
     return getOutputDir() / "output" / prodName
 
 def _getProdImageDir(prodName):
-    return getOutputDir() / "image" / prodName
+    return getImageDir() / prodName
 
 def _getProdSlideDir(prodOutputDirBase, prodName):
     return prodOutputDirBase / "slide" / prodName
