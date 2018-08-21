@@ -18,6 +18,7 @@ for i in imageDir.iterdir():
 
     images = list(i.glob('*.png'))
     images.extend(i.glob('*.bmp'))
+    images.sort()
 
     animeBase = animeDir / i.name
     concatFile = animeBase.with_suffix(".con.txt")
