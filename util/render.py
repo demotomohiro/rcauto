@@ -35,5 +35,14 @@ def _run(exe, timeout, logPath):
                     #proc.poll() != Noneでも子プロセスが終了したかどうかは確認できないけど・・・
                     print(str(exe) + "を実行した。ふぅ")
 
+    if pathStderr.stat().st_size == 0:
+        for i in range(5):
+            try:
+                pathStderr.unlink()
+            except PermissionError:
+                time.sleep(1)
+                continue
+            break
+
 def render(exe, timeout, logPath):
     _run(exe, timeout, logPath)
