@@ -4,6 +4,7 @@ import urllib.request
 import urllib.parse
 import shutil
 import pathlib
+import sys
 
 def _getHTML(url):
     with urllib.request.urlopen(url) as response:
@@ -22,8 +23,12 @@ class _ParseDownloadLinks(html.parser.HTMLParser):
         for i in attrs:
             if i[0] == 'href':
                 url = i[1]
-                if url.endswith(('.zip', '.tar.gz', 'tar.bz2', 'tar.xz')):
-                    self.urllist.append(urllib.parse.urljoin(self.srcURL, url))
+                if sys.platform == 'win32':
+                    if not url.endswith('.zip'):
+                        continue
+                elif not url.endswith(('.tar.gz', 'tar.bz2', 'tar.xz')):
+                    continue
+                self.urllist.append(urllib.parse.urljoin(self.srcURL, url))
 
 def getDownloadList(url):
     content = _getHTML(url)
