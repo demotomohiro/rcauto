@@ -28,8 +28,20 @@ downloadDir = mkdir("down")
 workDir     = mkdir("work")
 outputDir   = getOutputDir()
 archives    = []
+testedListFile = pathlib.Path("tested.txt")
+testeds     = set()
+with testedListFile.open() as f:
+    for i in f.readlines():
+        l = i.strip()
+        if len(l) == 0 or l.startswith("#"):
+            continue
+        testeds.add(l)
+
 for i in downloads:
-    path = download(i, getDownloadDestPath(i, downloadDir))
+    path = getDownloadDestPath(i, downloadDir)
+    if path.name in testeds:
+        continue
+    download(i, path)
     archives.append(path)
 
 for path in archives:
@@ -45,6 +57,8 @@ for path in archives:
             time.sleep(4)
             shutil.rmtree(str(prodDir))
     shutil.unpack_archive(str(path), str(prodDir))
+    with testedListFile.open('at') as f:
+        print(path.name, file = f)
     if not copySlides(prodDir, outputDir, prodName):
         print(prodName + "のスライドが無いんですが")
     exe = findExe(prodDir)
