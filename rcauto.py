@@ -30,12 +30,13 @@ outputDir   = getOutputDir()
 archives    = []
 testedListFile = pathlib.Path("tested.txt")
 testeds     = set()
-with testedListFile.open() as f:
-    for i in f.readlines():
-        l = i.strip()
-        if len(l) == 0 or l.startswith("#"):
-            continue
-        testeds.add(l)
+if testedListFile.exists():
+    with testedListFile.open() as f:
+        for i in f.readlines():
+            l = i.strip()
+            if len(l) == 0 or l.startswith("#"):
+                continue
+            testeds.add(l)
 
 for i in downloads:
     path = getDownloadDestPath(i, downloadDir)
