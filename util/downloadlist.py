@@ -26,7 +26,7 @@ class _ParseDownloadLinks(html.parser.HTMLParser):
                 if sys.platform == 'win32':
                     if not url.endswith('.zip'):
                         continue
-                elif not url.endswith(('.tar.gz', 'tar.bz2', 'tar.xz')):
+                elif not url.endswith(('.tar.gz', '.tar.bz2', '.tar.xz')):
                     continue
                 self.urllist.append(urllib.parse.urljoin(self.srcURL, url))
 
