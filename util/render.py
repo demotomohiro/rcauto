@@ -20,8 +20,11 @@ def _run(exe, timeout, logPath):
             stdout = fstdout, stderr = fstderr,
             cwd = cwd,
             start_new_session = True, creationflags = creationflags) as proc:
+            startTime = time.time()
+            endTime = 0
             try:
                 proc.wait(timeout)
+                endTime = time.time()
             except subprocess.TimeoutExpired:
                 print("Time out!!!")
             finally:
@@ -32,8 +35,10 @@ def _run(exe, timeout, logPath):
                     else:
                         os.killpg(proc.pid, signal.SIGKILL)
                     proc.kill()
-                    #proc.poll() != Noneでも子プロセスが終了したかどうかは確認できないけど・・・
-                    print(str(exe) + "を実行した。ふぅ")
+                #proc.poll() != Noneでも子プロセスが終了したかどうかは確認できないけど・・・
+                print(str(exe) + "を実行した。ふぅ")
+                if endTime >= startTime:
+                    print("実行時間: " + str(endTime - startTime) + "秒")
 
     if pathStderr.stat().st_size == 0:
         for i in range(5):
