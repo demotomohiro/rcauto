@@ -5,8 +5,9 @@ import sys
 import time
 from util.path          import *
 
-def _run(exe, timeout, logPath):
-    print(str(exe) + "を実行中")
+def _run(exe, timeout, logPath, passRender):
+    args = [str(exe)] if passRender == None else [str(exe)] + passRender
+    print(" ".join(args) + "を実行中")
     cwd = str(exe.parent)
     pathStdout = logPath.with_suffix('.stdout.txt')
     pathStderr = logPath.with_suffix('.stderr.txt')
@@ -16,7 +17,7 @@ def _run(exe, timeout, logPath):
         #subprocess.run()だと子プロセスを終了させることはできない。
         #新しいプロセスグループを作り, 終了させるときはプロセスグループのリーダーにシグナルを送って, グループ全体を終了させる。
         with subprocess.Popen(
-            [str(exe)],
+            args,
             stdout = fstdout, stderr = fstderr,
             cwd = cwd,
             start_new_session = True, creationflags = creationflags) as proc:
@@ -49,5 +50,5 @@ def _run(exe, timeout, logPath):
                 continue
             break
 
-def render(exe, timeout, logPath):
-    _run(exe, timeout, logPath)
+def render(exe, timeout, logPath, passRender):
+    _run(exe, timeout, logPath, passRender)

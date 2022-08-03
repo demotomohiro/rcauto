@@ -11,6 +11,7 @@ from util.path          import *
 parser = argparse.ArgumentParser(description="レイトレ合宿における作品を自動実行するやつ")
 parser.add_argument("--src", help = "ダウンロードするファイルがあるページのURL", metavar="URL")
 parser.add_argument("--timelimit", default = 123, type = int, help = "制限時間(秒)")
+parser.add_argument("--passRender", nargs = '*', help = "作品を実行するときに渡す引数")
 args = parser.parse_args()
 
 downloadsTxt = pathlib.Path("downloads.txt")
@@ -70,7 +71,7 @@ for path in archives:
     #ファイルのタイムスタンプを見て元からあるファイルなのか出力ファイルなのかを区別する。
     #なので確実に出力ファイルのタイムがstartTimeより後になるようsleepする。
     time.sleep(4)
-    render(exe, args.timelimit, getStdoutDir() / prodName)
+    render(exe, args.timelimit, getStdoutDir() / prodName, args.passRender)
     if not copyOutputs(prodDir, prodName, startTime):
         print(str(exe) + "の出力画像が無い。なにかがおかしい。")
 
