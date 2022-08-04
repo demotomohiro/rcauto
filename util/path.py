@@ -33,7 +33,7 @@ def _copyOutputs(dir, startTime, prodOutputDir, prodImageDir, foundImage = False
                 foundImage = True
         else:
             if i.stat().st_mtime > startTime:
-                if i.suffix == '.bmp' or i.suffix == '.png':
+                if i.suffix == '.bmp' or i.suffix == '.png' or i.suffix == '.hdr' or i.suffix == '.jpg':
                     if foundImage == False:
                         mkdir(prodImageDir)
                         print(str(dir) + "内のレンダリング画像をコピー中。")
