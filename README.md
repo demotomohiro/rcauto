@@ -56,3 +56,7 @@ python3 animeka.py
 1. リストの内容を元に.con.txtファイルをout/animeディレクトリに作成する。
    - .con.txtファイルはffmpegのconcat Demuxerで使われる(https://www.ffmpeg.org/ffmpeg-formats.html#concat-1)。
 1. ffmpegを使ってレンダリング経過画像を一つの動画ファイルに変換し、out/animeディレクトリに出力する。
+
+### Setupスクリプト
+setup/rtcamp20xx/ディレクトリにはそれぞれのインスタンスに必要なソフトウェアをインストールしたりするスクリプトが入っている。
+基本的にはインスタンス起動時に"高度な詳細"→"ユーザーデータ"にコピーして使えるようになっているが一部手動で実行する必要がある。
