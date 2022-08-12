@@ -20,6 +20,7 @@ for i in imageDir.iterdir():
     images.extend(i.glob('*.bmp'))
     images.sort()
 
+    fps = int((i / "fps.txt").read_text())
     animeBase = animeDir / i.name
     concatFile = animeBase.with_suffix(".con.txt")
     animeFile = animeBase.with_suffix(".apng")
@@ -29,5 +30,5 @@ for i in imageDir.iterdir():
         for img in images:
             print("file", "'" + str(img) + "'", file = fcon)
 
-    subprocess.run(["ffmpeg", "-r", "3", "-safe", "0", "-i", str(concatFile), "-plays", "0", str(animeFile)], cwd = str(i), check = True)
+    subprocess.run(["ffmpeg", "-r", str(fps), "-safe", "0", "-i", str(concatFile), "-plays", "0", str(animeFile)], cwd = str(i), check = True)
 

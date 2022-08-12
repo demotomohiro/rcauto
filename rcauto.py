@@ -74,4 +74,6 @@ for path in archives:
     render(exe, args.timelimit, getStdoutDir() / prodName, args.passRender)
     if not copyOutputs(prodDir, prodName, startTime):
         print(str(exe) + "の出力画像が無い。なにかがおかしい。")
-
+    else:
+        if not copyFPStxt(prodDir, prodName):
+            print(prodName + "のfps.txtが無い")

@@ -71,3 +71,15 @@ def copySlides(dir, prodOutputDirBase, prodName):
         _copyfile(i, dstDir)
 
     return True
+
+def copyFPStxt(dir, prodName):
+    fpsTxtPath = None
+
+    for i in dir.rglob("fps.txt"):
+        fpsTxtPath = i
+
+    if fpsTxtPath == None:
+        return False
+
+    _copyfile(fpsTxtPath, _getProdImageDir(prodName))
+    return True
