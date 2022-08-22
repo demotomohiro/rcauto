@@ -1,0 +1,15 @@
+version: 1.0
+tasks:
+- task: executeScript
+  inputs:
+  - frequency: once
+    type: powershell
+    runAs: admin
+    content: |-
+      iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+      scoop install git
+      scoop update
+      scoop bucket add extras
+      scoop install python ffmpeg anaconda3
+      git clone https://github.com/demotomohiro/rcauto.git C:\Users\Administrator\rcauto
+- task: enableOpenSsh

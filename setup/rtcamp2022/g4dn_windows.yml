@@ -1,0 +1,38 @@
+version: 1.0
+tasks:
+- task: executeScript
+  inputs:
+  - frequency: once
+    type: powershell
+    runAs: admin
+    content: |-
+      iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+      scoop install git
+      scoop update
+      scoop bucket add extras
+      scoop install python ffmpeg anaconda3
+      git clone https://github.com/demotomohiro/rcauto.git C:\Users\Administrator\rcauto
+
+      # NVIDIAドライバインストール
+      $Bucket = "nvidia-gaming"
+      $KeyPrefix = "windows/latest"
+      $LocalPath = "$home\NVIDIA"
+      $Objects = Get-S3Object -BucketName $Bucket -KeyPrefix $KeyPrefix -Region us-east-1
+      foreach ($Object in $Objects) {
+          $LocalFileName = $Object.Key
+          if ($LocalFileName -ne '' -and $Object.Size -ne 0) {
+              $LocalFilePath = Join-Path $LocalPath $LocalFileName
+              Copy-S3Object -BucketName $Bucket -Key $Object.Key -LocalFile $LocalFilePath -Region us-east-1
+              Expand-Archive -Path $LocalFilePath -DestinationPath $home\nvdriver
+          }
+      }
+      $err = (Start-Process -FilePath (Get-ChildItem -Path $home\nvdriver\*.exe -File)[0] -ArgumentList "-s" -Wait -NoNewWindow -PassThru).ExitCode
+      if ($err -ne 0) {
+        Write-Error "Failed to install NVIDIA driver"
+      }
+      Write-Output "Installed NVIDIA driver"
+      $err = (Start-Process -FilePath "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
+      if ($err -ne 0) {
+        Write-Error "Failed to nvidia-smi"
+      }
+- task: enableOpenSsh
