@@ -13,10 +13,11 @@ def _getHTML(url):
         return response.read().decode('utf-8')
 
 class _ParseDownloadLinks(html.parser.HTMLParser):
-    def __init__(self, srcURL):
+    def __init__(self, srcURL, instanceType):
         html.parser.HTMLParser.__init__(self)
         self.urllist = []
         self.srcURL = srcURL
+        self.instanceType = instanceType
     def handle_starttag(self, tag, attrs):
         if tag != 'a':
             return
@@ -28,19 +29,24 @@ class _ParseDownloadLinks(html.parser.HTMLParser):
                         continue
                 elif not url.endswith(('.tar.gz', '.tar.bz2', '.tar.xz')):
                     continue
+
+                urlSplit = url.split("_")
+                if urlSplit[2] != self.instanceType:
+                    continue
+
                 self.urllist.append(urllib.parse.urljoin(self.srcURL, url))
 
-def getDownloadList(url):
+def getDownloadList(url, instanceType):
     content = _getHTML(url)
     #print(content)
 
-    parser = _ParseDownloadLinks(url)
+    parser = _ParseDownloadLinks(url, instanceType)
     parser.feed(content)
     #print(parser.urllist)
     return parser.urllist
 
-def writeDownloadList(url, path):
-    dl = getDownloadList(url)
+def writeDownloadList(url, path, instanceType):
+    dl = getDownloadList(url, instanceType)
     pathlib.Path(path).write_text("\n".join(dl))
 
 def getDownloadDestPath(url, destDir):

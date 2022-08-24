@@ -11,6 +11,7 @@ from util.path          import *
 parser = argparse.ArgumentParser(description="レイトレ合宿における作品を自動実行するやつ")
 parser.add_argument("--src", help = "ダウンロードするファイルがあるページのURL", metavar="URL")
 parser.add_argument("--timelimit", default = 123, type = int, help = "制限時間(秒)")
+parser.add_argument("--instanceType", help = "EC2インスタンスがcpuかgpuか", choices=["cpu", "gpu"], required=True)
 parser.add_argument("--passRender", nargs = '*', help = "作品を実行するときに渡す引数")
 args = parser.parse_args()
 
@@ -19,7 +20,7 @@ if not downloadsTxt.exists() or args.src != None:
     if args.src == None:
         parser.print_help()
         parser.exit()
-    writeDownloadList(args.src, downloadsTxt)
+    writeDownloadList(args.src, downloadsTxt, args.instanceType)
     print("webページからダウンロードする作品のリストを取ってきた。")
 
 with downloadsTxt.open() as downloadsFile:
