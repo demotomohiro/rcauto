@@ -31,7 +31,21 @@ tasks:
         Write-Error "Failed to install NVIDIA driver"
       }
       Write-Output "Installed NVIDIA driver"
-      $err = (Start-Process -FilePath "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
+
+      # CUDA toolkitのインストール
+      $LocalCudaPath = "$home\NVIDIA\cudatoolkit.exe"
+      # ダウンロードに50分ぐらいかかるので本番はS3からダウンロードする。
+      Invoke-WebRequest -Uri "https://developer.download.nvidia.com/compute/cuda/11.7.1/local_installers/cuda_11.7.1_516.94_windows.exe" -OutFile $LocalCudaPath
+      # Copy-S3Object -BucketName rtcamp2022-test -Key runtimes/cudatoolkit_windows.exe -LocalFile $LocalCudaPath -Region us-east-1
+      $err = (Start-Process -FilePath $LocalCudaPath -ArgumentList "-s" -Wait -NoNewWindow -PassThru).ExitCode
+      if ($err -ne 0) {
+        Write-Error "Failed to install CUDA Toolkit"
+      }
+      Write-Output "Installed CUDA Toolkit"
+
+      # CUDA toolkitをインストールするとnvidia-smiの場所が変わる。
+      # $err = (Start-Process -FilePath "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
+      $err = (Start-Process -FilePath "nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
       if ($err -ne 0) {
         Write-Error "Failed to nvidia-smi"
       }
