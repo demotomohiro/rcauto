@@ -60,8 +60,6 @@ for path in archives:
             time.sleep(4)
             shutil.rmtree(str(prodDir))
     shutil.unpack_archive(str(path), str(prodDir))
-    with testedListFile.open('at') as f:
-        print(path.name, file = f)
     if not copySlides(prodDir, outputDir, prodName):
         print(prodName + "のスライドが無いんですが")
     exe = findExe(prodDir)
@@ -78,3 +76,6 @@ for path in archives:
     else:
         if not copyFPStxt(prodDir, prodName):
             print(prodName + "のfps.txtが無い")
+
+    with testedListFile.open('at') as f:
+        print(path.name, file = f)
