@@ -20,7 +20,14 @@ for i in imageDir.iterdir():
     images.extend(i.glob('*.bmp'))
     images.sort()
 
-    fps = int((i / "fps.txt").read_text())
+    fpsFilePath = i / "fps.txt"
+    try:
+        fps = int(fpsFilePath.read_text())
+    except ValueError:
+        # powershellでecho 30 > fps.txtとするとBOMつきのutf-16-leになる。
+        # その場合encodingを指定しないと正しく読み込めない。
+        fps = int(fpsFilePath.read_text(encoding='utf-16'))
+
     animeBase = animeDir / i.name
     concatFile = animeBase.with_suffix(".con.txt")
     animeFile = animeBase.with_suffix(".apng")
