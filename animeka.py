@@ -38,5 +38,5 @@ for i in imageDir.iterdir():
         for img in images:
             print("file", "'" + str(img) + "'", file = fcon)
 
-    subprocess.run(["ffmpeg", "-r", str(fps), "-safe", "0", "-i", str(concatFile), "-plays", "0", str(animeFile)], cwd = str(i), check = True)
-
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-r", str(fps), "-safe", "0", "-i", str(concatFile), "-plays", "0", str(animeFile)], cwd = str(i), check = True)
+    print(str(i) + "にあるファイルから動画を作成した。")
