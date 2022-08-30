@@ -18,6 +18,7 @@ for i in imageDir.iterdir():
 
     images = list(i.glob('*.png'))
     images.extend(i.glob('*.bmp'))
+    images.extend(i.glob('*.jpg'))
     images.sort()
 
     fpsFilePath = i / "fps.txt"
