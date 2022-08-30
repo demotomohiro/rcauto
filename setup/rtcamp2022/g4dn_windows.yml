@@ -37,15 +37,18 @@ tasks:
       # ダウンロードに50分ぐらいかかるので本番はS3からダウンロードする。
       Invoke-WebRequest -Uri "https://developer.download.nvidia.com/compute/cuda/11.7.1/local_installers/cuda_11.7.1_516.94_windows.exe" -OutFile $LocalCudaPath
       # Copy-S3Object -BucketName rtcamp2022-test -Key runtimes/cudatoolkit_windows.exe -LocalFile $LocalCudaPath -Region us-east-1
-      $err = (Start-Process -FilePath $LocalCudaPath -ArgumentList "-s" -Wait -NoNewWindow -PassThru).ExitCode
+
+      # CUDA toolkitを-s -nオプションのみでインストールすると既にインストールしたNVIDIAドライバーをCUDA Toolkit内のドライバで上書きされるらしい。
+      # そうなるとVulkanが使えなくなるようなので必要そうなライブラリのみを指定してインストールする。
+      $err = (Start-Process -FilePath $LocalCudaPath -ArgumentList "-s -n cudart_11.7 nvrtc_11.7 nvtx_11.7 thrust_11.7 cublas_11.7 cufft_11.7 curand_11.7 cusolver_11.7 cusparse_11.7 npp_11.7 nvjpeg_11.7" -Wait -NoNewWindow -PassThru).ExitCode
       if ($err -ne 0) {
         Write-Error "Failed to install CUDA Toolkit"
       }
       Write-Output "Installed CUDA Toolkit"
 
+      $err = (Start-Process -FilePath "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
       # CUDA toolkitをインストールするとnvidia-smiの場所が変わる。
-      # $err = (Start-Process -FilePath "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
-      $err = (Start-Process -FilePath "nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
+      # $err = (Start-Process -FilePath "nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
       if ($err -ne 0) {
         Write-Error "Failed to nvidia-smi"
       }
