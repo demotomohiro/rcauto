@@ -62,7 +62,7 @@ def copyOutputs(dir, prodName, startTime):
 def copySlides(dir, prodOutputDirBase, prodName):
     dstDir = _getProdSlideDir(prodOutputDirBase, prodName)
     srcs = []
-    for i in ["*.pdf", "*.pptx", "*.key"]:
+    for i in ["*.pdf", "*.pptx", "*.key", "*.mp4"]:
         srcs.extend(dir.rglob(i))
     if len(srcs) == 0:
         return False
