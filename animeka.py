@@ -1,5 +1,6 @@
 import shutil
 import subprocess
+import time
 from util.path          import *
 
 if shutil.which("ffmpeg") == None:
@@ -38,5 +39,6 @@ for i in imageDir.iterdir():
         for img in images:
             print("file", "'" + str(img) + "'", file = fcon)
 
+    print(f"[{time.strftime('%X')}] {str(i)}にあるファイルから動画を作成開始。")
     subprocess.run(["ffmpeg", "-loglevel", "error", "-r", str(fps), "-safe", "0", "-i", str(concatFile), "-plays", "0", str(animeFile)], cwd = str(i), check = True)
-    print(str(i) + "にあるファイルから動画を作成した。")
+    print(f"[{time.strftime('%X')}] {str(i)}にあるファイルから動画を作成した。")
