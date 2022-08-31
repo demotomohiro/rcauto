@@ -44,6 +44,10 @@ tasks:
       if ($err -ne 0) {
         Write-Error "Failed to install CUDA Toolkit"
       }
+      # CUDA toolkitからインストールするライブラリを指定すると環境変数が自動的に設定されないのでここで設定する。
+      $cudaPath = [Environment]::GetEnvironmentVariable('CUDA_PATH', 'Machine')
+      $userPath = [Environment]::GetEnvironmentVariable('PATH', 'User')
+      [Environment]::SetEnvironmentVariable('path', $cudaPath + '\bin;' + $userPath, 'User')
       Write-Output "Installed CUDA Toolkit"
 
       $err = (Start-Process -FilePath "C:\Program Files\NVIDIA Corporation\NVSMI\nvidia-smi" -ArgumentList "-ac","5001,1590" -Wait -NoNewWindow -PassThru).ExitCode
