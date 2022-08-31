@@ -15,3 +15,9 @@ EOF
 sudo curl -o /etc/nvidia/GridSwCert.txt "https://nvidia-gaming.s3.amazonaws.com/GridSwCert-Archive/GridSwCertLinux_2021_10_2.cert"
 sudo touch /etc/modprobe.d/nvidia.conf
 echo "options nvidia NVreg_EnableGpuFirmware=0" | sudo tee --append /etc/modprobe.d/nvidia.conf
+
+# Install CUDA Toolkit
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/install-nvidia-driver.html#gpu-instance-install-cuda
+# https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile
+sudo su ec2-user -c 'wget -O ~/cuda.run https://developer.download.nvidia.com/compute/cuda/11.7.1/local_installers/cuda_11.7.1_515.65.01_linux.run'
+sudo su ec2-user -c 'sudo sh ~/cuda.run --silent --toolkit --override --no-opengl-libs --no-man-page'
