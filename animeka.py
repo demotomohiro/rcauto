@@ -32,7 +32,7 @@ for i in imageDir.iterdir():
 
     animeBase = animeDir / i.name
     concatFile = animeBase.with_suffix(".con.txt")
-    animeFile = animeBase.with_suffix(".apng")
+    animeFile = animeBase.with_suffix(".mp4")
 
     with concatFile.open('w') as fcon:
         print("ffconcat version 1.0", file = fcon)
